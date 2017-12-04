@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Component
 public class TemplateService {
 
@@ -23,4 +25,7 @@ public class TemplateService {
         restTemplate.postForObject(url + "save", template, Void.class);
     }
 
+    public List<Template> findAll() {
+        return restTemplate.getForObject(url + "list",List.class);
+    }
 }

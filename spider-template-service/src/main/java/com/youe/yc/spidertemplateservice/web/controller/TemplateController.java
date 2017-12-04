@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/template")
 public class TemplateController {
@@ -27,6 +29,11 @@ public class TemplateController {
 
         Template template = JsonUtils.parseObject(templateJson, Template.class);
         service.save(template);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public List<Template> getAll(){
+        return service.findAll();
     }
 
     /*@RequestMapping(value = "/update", method = RequestMethod.POST)

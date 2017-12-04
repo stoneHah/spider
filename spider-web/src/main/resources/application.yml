@@ -3,9 +3,8 @@
 ##########################################################
 
 server:
-  port: 8083
-####################   mongodb配置       ########################
+  port: 8080
 spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost/spider
+  thymeleaf:
+    mode: HTML5
+    cache: false

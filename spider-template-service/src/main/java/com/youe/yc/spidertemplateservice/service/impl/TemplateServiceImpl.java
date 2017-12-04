@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TemplateServiceImpl implements ITemplateService {
@@ -27,6 +28,11 @@ public class TemplateServiceImpl implements ITemplateService {
 	public void save(Template template) {
 		template.setUpdateTime(new Date());
 		mongoTemplate.save(template);
+	}
+
+	@Override
+	public List<Template> findAll() {
+		return mongoTemplate.findAll(Template.class);
 	}
 
 	/*@Override

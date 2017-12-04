@@ -27,10 +27,10 @@ public class GenericPageProcessor implements PageProcessor {
     @Override
     public void process(Page page) {
         TypeRequest request = (TypeRequest) page.getRequest();
-        
+
         //添加额外数据
         addExtreData(request);
-        
+
         RequestProcessor requestProcessor = RequestProcessorFactory.getRequestProcessor(request);
         
         if(requestProcessor != null){

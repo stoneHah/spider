@@ -3,6 +3,8 @@ package com.youe.yc.spidertemplateservice.service;
 
 import com.youe.yc.spidertemplateservice.entity.Template;
 
+import java.util.List;
+
 public interface ITemplateService {
 	
 	/**
@@ -18,7 +20,9 @@ public interface ITemplateService {
 	 */
 	void save(Template template);
 
-	/**
+    List<Template> findAll();
+
+    /**
 	 * 更新模板信息
 	 * @param template
 	 */

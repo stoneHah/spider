@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Welcome to Thymeleaf</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="bootstrap.min.css?v=${v}"
+          rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .left{
+            width: 200px;
+        }
+        .list-group-item{
+            cursor: pointer;
+        }
+
+        .ui-header{
+            background: #279879;
+            color: #fff;
+            font-size: 16px;
+            cursor: default;
+        }
+        .right{
+            margin-left: 205px;
+            border: 1px solid;
+            top: 0;
+            position: absolute;
+            height: 650px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="">
+        <div class="left">
+            <ul class="list-group" id="template_list">
+                <li class="list-group-item ui-header" data-header-index="-1">模板列表</li>
+            </ul>
+        </div>
+        <div class="right">
+
+        </div>
+    </div>
+    <script type="application/javascript" th:src="@{/js/jquery.js}"></script>
+    <script type="application/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:inline="javascript">
+        var contextRoot = /*[[@{/}]]*/ ''
+        $(function () {
+            init();
+            
+            function init() {
+                getTemplates();
+            }
+
+            function getTemplates() {
+                $.get('/template/list',function (data) {
+                    if(data && data.length > 0){
+                        var ary = [];
+                        $.each(data,function (i, item) {
+                            var $li = $('<li class="list-group-item" data-templateid="'+item.id+'">'+item.name+'</li>');
+                            ary.push($li);
+                        });
+
+                        var $tempList = $('#template_list')
+                        $tempList.append(ary);
+
+                        selectTemplate(ary[0]);
+                    }
+                });
+            }
+            
+            function selectTemplate($li) {
+                var $tempList = $('#template_list');
+                $tempList.find('li').removeClass('active');
+
+                $li.addClass("active");
+
+                getAndFillTemplate($li.data('templateid'));
+            }
+            
+            function getAndFillTemplate(templateId) {
+                $.get('/template/' + templateId,function (data) {
+                    console.log("模板["+templateId+"]:" + JSON.stringify(data));
+                });
+            }
+
+            function buildUrl(url) {
+                return contextRoot + url;
+            }
+        });
+    </script>
+</body>
+
+</html>
