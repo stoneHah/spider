@@ -1,0 +1,26 @@
+package com.youe.yc.common.utils;
+
+
+import com.youe.yc.common.toolkit.IdWorker;
+
+/**
+ * 唯一id生成器
+ *
+ * @author fengshuonan
+ * @date 2017-08-23 11:10
+ */
+public class IdGenerator {
+
+    public static String getId() {
+        return String.valueOf(IdWorker.getId());
+    }
+
+    public static long getIdLong() {
+        return IdWorker.getId();
+    }
+    
+    public static void main(String[] args) {
+		System.out.println(IdGenerator.getId());
+		System.out.println(IdGenerator.getIdLong());
+	}
+}
