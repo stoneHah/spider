@@ -1,0 +1,125 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+	#template_list .active a{
+		color: #fff;
+	}
+
+	#regionRuleZone .panel-heading{
+		position: relative;
+	}
+
+	#regionRuleZone .panel-heading .heading-btn{
+		position: absolute;
+		top: 2px;
+		right: 5px;
+	}
+
+	#regionRuleZone .panel-heading .heading-font-btn{
+		position: absolute;
+		font-size: 20px;
+		top: 7px;
+		right: 5px;
+		cursor: pointer;
+	}
+
+	.fieldRuleContainer{
+		position: relative;
+		padding-right: 20px;
+	}
+
+	.fieldRuleContainer .field-delete-btn{
+		position: absolute;
+		right: -5px;
+		top: 27px;
+		font-size: 20px;
+		color: #bd1d1d;
+		cursor: pointer;
+	}
+
+</style>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title" style="position: relative;">
+				<h5>模板配置</h5>
+				<button type="button" class="btn btn-success" style="position: absolute;right: 10px;top: 5px;">新建</button>
+			</div>
+			<div class="ibox-content">
+				<div class="row row-lg">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-lg-2 col-sm-3">
+								<div class="panel panel-default">
+									<div class="panel-heading">模板列表</div>
+									<div class="list-group" id="template_list">
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-10 col-sm-9">
+								<form class="form-horizontal">
+									<input type="text" class="form-control" id="id" name="id">
+									<div class="form-group">
+										<label for="name" class="col-lg-1 col-sm-2 control-label">名称</label>
+										<div class="col-lg-11 col-sm-10">
+											<input type="text" class="form-control" id="name" name="name" placeholder="模板名称">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="seedUrl" class="col-lg-1 col-sm-2 control-label">种子URL</label>
+										<div class="col-lg-11 col-sm-10">
+											<input type="text" class="form-control" id="seedUrl" name="seedUrl" placeholder="输入url">
+										</div>
+									</div>
+
+									<div class="col-sm-6 b-r">
+										<div class="form-group">
+											<label for="startUrls" class="col-sm-3 control-label">startUrls</label>
+											<div class="col-sm-9">
+												<textarea class="form-control" rows="3" id="startUrls"></textarea>
+												<span class="help-block m-b-none">多个url使用 逗号（，）、分号（；）、空格 进行分隔</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="urlRegex" class="col-sm-3 control-label">url过滤表达式</label>
+											<div class="col-sm-9">
+												<textarea class="form-control" rows="3" id="urlRegex"></textarea>
+												<span class="help-block m-b-none">多个url使用 逗号（，）、分号（；）、空格 进行分隔</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="panel panel-default" id="regionRuleZone">
+											<div class="panel-heading">
+												<h3 class="panel-title">区域抽取规则</h3>
+												<button type="button" class="btn btn-primary heading-btn" onclick="TemplateMgr.enterRegionRuleName();">添加</button>
+											</div>
+											<div class="panel-body" id="regionRuleZoneBody">
+												<div class="panel panel-default" id="regionTip">
+													<div class="panel-body">
+														暂无数据
+													</div>
+												</div>
+												<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-sm-offset-3 col-sm-8">
+											<button type="button" class="btn btn-primary">测试</button>
+											<button type="button" class="btn btn-primary button-margin">保存</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/template/template.js"></script>
+@}

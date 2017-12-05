@@ -186,5 +186,6 @@
         <module>spider-common</module>
         <module>spider-template-service</module>
         <module>spider-service</module>
+        <module>spider-admin</module>
     </modules>
 </project>

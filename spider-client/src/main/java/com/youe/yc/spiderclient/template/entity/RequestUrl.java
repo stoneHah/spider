@@ -6,7 +6,7 @@ public class RequestUrl {
     public static final String METHOD_POST = "POST";
 
     private String url;
-    private String method;
+    private String method = METHOD_GET;
     private String paramJson;
 
     public RequestUrl() {

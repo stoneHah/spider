@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="guns-admin" />
+        <module name="guns-core" />
+        <module name="spider-admin" />
+        <module name="spider-client" />
+        <module name="spider-common" />
+        <module name="spider-service" />
+        <module name="spider-template-service" />
+        <module name="spider-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="guns-admin" target="1.8" />
+      <module name="guns-core" target="1.8" />
+      <module name="guns-parent" target="1.8" />
+      <module name="guns-rest" target="1.8" />
+      <module name="spider" target="1.8" />
+      <module name="spider-admin" target="1.8" />
+      <module name="spider-client" target="1.8" />
+      <module name="spider-common" target="1.8" />
+      <module name="spider-service" target="1.8" />
+      <module name="spider-template-service" target="1.8" />
+      <module name="spider-web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
