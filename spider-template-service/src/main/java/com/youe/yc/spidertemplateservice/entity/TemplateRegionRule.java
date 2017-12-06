@@ -15,10 +15,15 @@ import java.util.List;
 public class TemplateRegionRule {
 
 	private String name;
-	@Field("select_expression")
-	private String selectExpression;
+
 	@Field("url_regex")
 	private String urlRegex;
+
+	/**
+	 * 限制字段抽取规则的区域
+	 */
+	@Field("select_expression")
+	private String selectExpression;
 
 	/**
 	 * 区域的范围

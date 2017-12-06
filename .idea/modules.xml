@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/spider-admin/guns-admin/guns-admin.iml" filepath="$PROJECT_DIR$/spider-admin/guns-admin/guns-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider-admin/guns-core/guns-core.iml" filepath="$PROJECT_DIR$/spider-admin/guns-core/guns-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider-admin/guns-parent/guns-parent.iml" filepath="$PROJECT_DIR$/spider-admin/guns-parent/guns-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider.iml" filepath="$PROJECT_DIR$/spider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider-admin/spider-admin.iml" filepath="$PROJECT_DIR$/spider-admin/spider-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider-client/spider-client.iml" filepath="$PROJECT_DIR$/spider-client/spider-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider-common/spider-common.iml" filepath="$PROJECT_DIR$/spider-common/spider-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider-service/spider-service.iml" filepath="$PROJECT_DIR$/spider-service/spider-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider-template-service/spider-template-service.iml" filepath="$PROJECT_DIR$/spider-template-service/spider-template-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spider-web/spider-web.iml" filepath="$PROJECT_DIR$/spider-web/spider-web.iml" />
+    </modules>
+  </component>
+</project>
