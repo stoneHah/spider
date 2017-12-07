@@ -2,7 +2,7 @@
  * 模板管理
  */
 var TemplateMgr = {
-    delimiters: ',; '
+    delimiters: ',; \n\t'
 };
 
 /**
@@ -39,6 +39,7 @@ TemplateMgr.selectTemplate = function (templateId) {
 
     $tempList.find('a[data-templateid="'+templateId+'"]').addClass("active");
 
+    $('#accordion').empty();
     TemplateMgr.getAndFillTemplate(templateId);
 };
 
@@ -88,28 +89,110 @@ TemplateMgr.fillData = function (data) {
  * 重置模板信息
  */
 TemplateMgr.reset = function () {
+    $('input,textarea').val('');
 
+    $('#accordion').empty();
+    $('#regionTip').show();
+
+    //取消选中的模板
+    $('#template_list a').removeClass('active');
+};
+
+TemplateMgr.save = function () {
+    if(this.check()){
+        var data = this.fetchData();
+        console.log(JSON.stringify(data));
+
+        var ajax = new $ax(Feng.ctxPath + '/template/upsert',function (data) {
+            if(data.success){
+                Feng.success("保存成功");
+            }
+        });
+        ajax.contentType = "text/plain";
+        ajax.setData(JSON.stringify(data));
+        ajax.start();
+    }
 };
 
 TemplateMgr.fetchData = function () {
     var data = {
         id: $('#id').val() || null,
-        name:  $('#name').val()
+        name:  $('#name').val(),
+        seedUrl: {
+            url: $('#seedUrl').val()
+        }
     };
 
     var urlRegexStr = $('#urlRegex').val();
     data.urlRegex = Feng.tokenizeToStringArray(urlRegexStr,TemplateMgr.delimiters);
+
+    data.regionRules = this.fetchRegionRuleData();
+
+    return data;
+};
+
+/**
+ * 获取区域规则信息
+ */
+TemplateMgr.fetchRegionRuleData = function () {
+    var regionRules = [];
+    var zoneList = $('#accordion > .panel');
+    if(zoneList.length > 0) {
+        $.each(zoneList,function(i,zone){
+            var $zone = $(zone);
+            var regionName = $.trim($zone.children('.panel-heading').find('.panel-title').text()),
+                zoneUrlRegex = $zone.find('input[name="zoneUrlRegex"]').val(),
+                zoneExtractContext = $zone.find('input[name="zoneExtractContext"]').val();
+
+            var fieldRuleData = TemplateMgr.fetchFieldRuleData($zone.find('[role="fieldRuleRegion"]'));
+
+            regionRules.push({
+                name: regionName,
+                selectExpression: zoneExtractContext,
+                urlRegex: zoneUrlRegex,
+                fieldRules: fieldRuleData
+            });
+        });
+    }
+
+    return regionRules;
+};
+
+/**
+ * 获取字段抽取规则
+ * @param $fieldRuleRegion
+ */
+TemplateMgr.fetchFieldRuleData = function ($fieldRuleRegion) {
+    var fieldRules = [];
+
+    var fieldList = $fieldRuleRegion.find('.fieldRuleContainer');
+    if(fieldList.length > 0) {
+        $.each(fieldList,function (i, item) {
+            var $fieldRegion = $(item);
+            var fieldName = $fieldRegion.find('input[name="fieldName"]').val(),
+                rule = $fieldRegion.find('input[name="rule"]').val();
+
+            fieldRules.push({
+                fieldName: fieldName,
+                rule: rule
+            });
+        });
+    }
+
+    return fieldRules;
 };
 
 TemplateMgr.check = function () {
-    var selected = $('#' + this.id).bootstrapTable('getSelections');
+   /* var selected = $('#' + this.id).bootstrapTable('getSelections');
     if (selected.length == 0) {
         Feng.info("请先选中表格中的某一记录！");
         return false;
     } else {
         MgrUser.seItem = selected[0];
         return true;
-    }
+    }*/
+
+   return true;
 };
 
 /**
@@ -145,13 +228,13 @@ TemplateMgr.appendRegionRule = function (regionName,ruleData) {
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="form-group">\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<label for="zoneUrlRegex_'+curIndex+'" class="col-sm-3 control-label">url匹配表达式</label>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="col-sm-9">\n' +
-        '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="text" class="form-control" id="zoneUrlRegex_'+curIndex+'" placeholder="输入url" value="'+Feng.getProp(ruleData,"urlRegex")+'">\n' +
+        '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="text" class="form-control" name="zoneUrlRegex" id="zoneUrlRegex_'+curIndex+'" placeholder="输入url" value="'+Feng.getProp(ruleData,"urlRegex","")+'">\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="form-group">\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<label for="zoneExtractContext_'+curIndex+'" class="col-sm-3 control-label">抽取上下文表达式</label>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="col-sm-9">\n' +
-        '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="text" class="form-control" id="zoneExtractContext_'+curIndex+'" placeholder="" value="'+Feng.getProp(ruleData,"selectExpression")+'">\n' +
+        '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="text" class="form-control" name="zoneExtractContext" id="zoneExtractContext_'+curIndex+'" placeholder="" value="'+Feng.getProp(ruleData,"selectExpression","")+'">\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="panel panel-default">\n' +
@@ -159,7 +242,7 @@ TemplateMgr.appendRegionRule = function (regionName,ruleData) {
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<h3 class="panel-title">字段抽取规则</h3>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class="glyphicon glyphicon-plus heading-font-btn" role="addField" onclick="TemplateMgr.appendFieldRule('+curIndex+')"></i>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
-        '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="panel-body" id="fieldRuleRegion_'+curIndex+'">\n' +
+        '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="panel-body" id="fieldRuleRegion_'+curIndex+'" role="fieldRuleRegion">\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
         '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
@@ -195,7 +278,7 @@ TemplateMgr.appendFieldRule = function (regionIndex, fieldRuleData) {
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttype="button">字段名\n' +
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</button>\n' +
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
-    '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="text" class="form-control" name="fieldName" placeholder="字段名" value="'+Feng.getProp(fieldRuleData,'fieldName')+'"/>\n' +
+    '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="text" class="form-control" name="fieldName" placeholder="字段名" value="'+Feng.getProp(fieldRuleData,'fieldName','')+'"/>\n' +
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="input-group">\n' +
     '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="input-group-btn">\n' +

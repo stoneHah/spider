@@ -1,46 +1,31 @@
 package com.youe.yc.spiderservice.core.task;
 
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * 任务执行上下文
- * @author ibm
  *
+ * @author ibm
  */
 public class TaskExecutorContext {
-	private String contextId;
+	private TaskList taskList = new TaskList();
 
-	public TaskExecutorContext(String contextId) {
-		super();
-		this.contextId = contextId;
-	}
+	private ConcurrentHashMap<Task.TaskIdentifier, Task> taskIdentifierToTaskMap = new ConcurrentHashMap<>();
 
-	public String getContextId() {
-		return contextId;
+	public void addTask(Task task) {
+		taskList.addTask(task);
+		taskIdentifierToTaskMap.put(task.getTaskIdentifier(), task);
 	}
 
-	public void setContextId(String contextId) {
-		this.contextId = contextId;
+	public Task getTask(Task.TaskIdentifier taskIdentifier) {
+		return taskIdentifierToTaskMap.get(taskIdentifier);
 	}
-	
-	@Override
-	public int hashCode() {
-		return contextId.hashCode();
+
+	public List<Task> getAllTasks(){
+		return taskList.getTaskList();
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof TaskExecutorContext){
-			TaskExecutorContext temp = (TaskExecutorContext) obj;
-			return this.contextId.equals(temp.contextId);
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public String toString() {
-		return contextId;
-	}
-	
+
 	public static void main(String[] args) {
 	}
 }

@@ -7,6 +7,7 @@
 		this.async = false;
 		this.success = success;
 		this.error = error;
+		this.contentType = 'application/x-www-form-urlencoded';
 	};
 	
 	$ax.prototype = {
@@ -25,6 +26,7 @@
 		        dataType: this.dataType,
 		        async: this.async,
 		        data: this.data,
+				contentType: this.contentType,
 				beforeSend: function(data) {
 					
 				},

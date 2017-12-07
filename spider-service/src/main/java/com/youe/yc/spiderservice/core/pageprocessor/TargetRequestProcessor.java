@@ -24,8 +24,7 @@ public class TargetRequestProcessor extends AbstractRequestProcessor {
 		RegionRuleScope scope = RegionRuleScope.getByCode(regionRule.getScope());
 		
 		Pattern pattern = Pattern.compile(regionRule.getUrlRegex());
-		if(pattern.matcher(request.getUrl()).matches() && 
-				RegionRuleScope.Target == scope){
+		if(pattern.matcher(request.getUrl()).matches()){
 			return true;
 		}
 		

@@ -140,7 +140,7 @@ var Feng = {
     },
     getProp: function(obj,prop,defaultVal) {
         if(obj == null || !prop){
-            return defaultVal || null;
+            return (typeof defaultVal == 'undefined') ? null : defaultVal;
         }
 
         return obj[prop];
@@ -157,7 +157,7 @@ var Feng = {
         for(var i = 0;i < str.length;i++) {
             var c = str[i];
             if(delimiters.indexOf(c) != -1) {
-                if(i > 1){
+                if(i > 1 && !reset){
                     upperBound = i - 1;
                     reset = true;
 

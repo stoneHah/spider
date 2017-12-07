@@ -12,59 +12,29 @@ public interface TaskExecutorService {
 	
 	/**
 	 * 执行任务
-	 * @param task
+	 * @param taskInfo
 	 */
-	void execute(Task task, TaskExecutorContext executorContext) throws TaskExecuteException;
+	void execute(TaskInfo taskInfo) throws TaskExecuteException;
 	
 	/**
 	 * 
-	 * @param task
+	 * @param taskIdentifier
 	 * @return
 	 */
-	boolean pause(Task task, TaskExecutorContext executorContext) throws TaskExecuteException;
+	boolean pause(Task.TaskIdentifier taskIdentifier) throws TaskExecuteException;
 	
 	/**
 	 * 
-	 * @param task
+	 * @param taskIdentifier
 	 * @return
 	 */
-	boolean restart(Task task, TaskExecutorContext executorContext) throws TaskExecuteException;
+	boolean restart(Task.TaskIdentifier taskIdentifier) throws TaskExecuteException;
 	
 	/**
 	 * 
-	 * @param task
-	 * @param executorContext
+	 * @param taskIdentifier
 	 * @return
 	 */
-	boolean stop(Task task, TaskExecutorContext executorContext) throws TaskExecuteException;
+	boolean stop(Task.TaskIdentifier taskIdentifier) throws TaskExecuteException;
 	
-	/**
-	 * 统计总的任务数
-	 * @return
-	 */
-	int countTotalTasks();
-	
-	/**
-	 * 统计上下文下的任务数
-	 * @param executorContext
-	 * @return
-	 */
-	int countTotalTasks(TaskExecutorContext executorContext);
-
-	/**
-	 * 统计指定任务状态的任务数
-	 * @param taskStatus
-	 * @return
-	 */
-	int countTaskByStatus(Task.TaskStatus taskStatus);
-	
-	/**
-	 * 统计上下文下置顶任务状态的任务数
-	 * @param executorContext
-	 * @param taskStatus
-	 * @return
-	 */
-	int countTaskByStatus(TaskExecutorContext executorContext, Task.TaskStatus taskStatus);
-	
-	int countExecutorService();
 }

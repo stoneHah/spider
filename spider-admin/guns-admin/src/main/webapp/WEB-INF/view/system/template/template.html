@@ -57,7 +57,7 @@
 							</div>
 							<div class="col-lg-10 col-sm-9">
 								<form class="form-horizontal">
-									<input type="text" class="form-control" id="id" name="id">
+									<input type="hidden" class="form-control" id="id" name="id">
 									<div class="form-group">
 										<label for="name" class="col-lg-1 col-sm-2 control-label">名称</label>
 										<div class="col-lg-11 col-sm-10">
@@ -108,8 +108,9 @@
 
 									<div class="form-group">
 										<div class="col-sm-offset-3 col-sm-8">
-											<button type="button" class="btn btn-primary">测试</button>
-											<button type="button" class="btn btn-primary button-margin">保存</button>
+											<button type="button" class="btn btn-primary" onclick="TemplateMgr.reset();">重置</button>
+											<button type="button" class="btn btn-primary button-margin">测试</button>
+											<button type="button" class="btn btn-primary button-margin" onclick="TemplateMgr.save();">保存</button>
 										</div>
 									</div>
 								</form>

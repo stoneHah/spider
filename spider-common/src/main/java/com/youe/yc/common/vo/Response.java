@@ -13,7 +13,7 @@ public class Response<T> {
     public Response() {
     }
 
-    private Response(ResponseBuilder<T> builder){
+    private Response(ResponseBuilder<T> builder) {
         this.data = builder.data;
         this.success = builder.success;
         this.code = builder.code;
@@ -52,12 +52,16 @@ public class Response<T> {
         this.errorMsg = errorMsg;
     }
 
-    public static class ResponseBuilder<T>{
+    public static class ResponseBuilder<T> {
         private T data;
         private boolean success;
         private int code;
 
         private String errorMsg;
+
+        public ResponseBuilder() {
+            this.data = null;
+        }
 
         public ResponseBuilder(T data) {
             this.data = data;
@@ -65,6 +69,11 @@ public class Response<T> {
 
         public ResponseBuilder code(int code) {
             this.code = code;
+            return this;
+        }
+
+        public ResponseBuilder data(T data) {
+            this.data = data;
             return this;
         }
 
@@ -78,7 +87,7 @@ public class Response<T> {
             return this;
         }
 
-        public Response<T> build(){
+        public Response<T> build() {
             return new Response(this);
         }
     }

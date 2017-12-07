@@ -1,8 +1,6 @@
 package com.youe.yc.spiderservice;
 
 import com.youe.yc.spiderclient.EnableTemplateClient;
-import com.youe.yc.spiderservice.core.task.Task;
-import com.youe.yc.spiderservice.core.task.TaskExecutorContext;
 import com.youe.yc.spiderservice.core.task.TaskExecutorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,11 +22,11 @@ public class SpiderServiceApplicationTests {
 
 	@Test
 	public void testTaskExecutorService() throws Exception{
-		Task task = new Task("5a211b8eae6ee211640fb64e");
+		/*TaskInfo task = new TaskInfo("5a2761d3ae6ee226b05d2348");
 
 		taskExecutorService.execute(task, new TaskExecutorContext("123"));
 
-		Thread.currentThread().sleep(600000);
+		Thread.currentThread().sleep(600000);*/
 	}
 
 }

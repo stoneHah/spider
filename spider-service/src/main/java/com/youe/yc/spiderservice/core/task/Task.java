@@ -1,89 +1,103 @@
 package com.youe.yc.spiderservice.core.task;
 
+import com.google.common.hash.HashCode;
 import com.youe.yc.common.utils.IdGenerator;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 爬取任务信息
- * @author ibm
  *
  */
 public class Task {
-	private String taskId;
-	private String templateId;
-	private TaskStatus taskStatus;
-	private Date createTime;
-	private Date completeTime;
-	
-	private ConcurrentHashMap<String,Object> extraMap = new ConcurrentHashMap<>();
-	
-	public Task(String templateId) {
-		super();
-		this.templateId = templateId;
-		this.taskId = IdGenerator.getId();
-		this.createTime = new Date();
-		this.taskStatus = TaskStatus.Create;
-	}
+    private TaskIdentifier taskIdentifier;
+    private TaskInfo taskInfo;
+    private volatile TaskStatus taskStatus;
 
-	public String getTaskId() {
-		return taskId;
-	}
+    private Date createTime;
+    private Date completeTime;
 
-	public String getTemplateId() {
-		return templateId;
-	}
+    public Task(TaskInfo taskInfo) {
+        this.taskInfo = taskInfo;
 
-	public Date getCreateTime() {
-		return createTime;
-	}
-	
-	public TaskStatus getTaskStatus() {
-		return taskStatus;
-	}
+        this.taskIdentifier = new TaskIdentifier(IdGenerator.getId());
+        this.taskStatus = TaskStatus.Create;
+        this.createTime = new Date();
+    }
 
-	public void setTaskStatus(TaskStatus taskStatus) {
-		this.taskStatus = taskStatus;
-	}
-	
-	public Date getCompleteTime() {
-		return completeTime;
-	}
+    public TaskInfo getTaskInfo() {
+        return taskInfo;
+    }
 
-	public void setCompleteTime(Date completeTime) {
-		this.completeTime = completeTime;
-	}
-	
-	public void put(String key,Object value){
-		extraMap.put(key, value);
-	}
-	
-	public Object get(String key){
-		return extraMap.get(key);
-	}
 
-	@Override
-	public int hashCode() {
-		return taskId.hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Task){
-			Task t = (Task) obj;
-			return this.taskId.equals(t.taskId);
-		}
-		return false;
-	}
-	
-	@Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
-	}
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
+    }
 
-	public static enum TaskStatus{
-		Create,Running,Pause,Exception,Complete
-	}
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public Date getCompleteTime() {
+        return completeTime;
+    }
+
+    public void setCompleteTime(Date completeTime) {
+        this.completeTime = completeTime;
+    }
+
+    public TaskIdentifier getTaskIdentifier() {
+        return taskIdentifier;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public TaskInfo.TaskContext getTaskContext(){
+        return taskInfo.getTaskContext();
+    }
+
+    @Override
+    public int hashCode() {
+        return taskIdentifier.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Task) {
+            Task temp = (Task) obj;
+            return temp.taskIdentifier.equals(this.taskIdentifier);
+        }
+        return super.equals(obj);
+    }
+
+    public static enum TaskStatus {
+        Create, Running, Pause, Complete
+    }
+
+    public static class TaskIdentifier{
+        private String id;
+
+        public TaskIdentifier(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public int hashCode() {
+            return HashCode.fromString(id).asInt();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof TaskIdentifier) {
+                TaskIdentifier temp = (TaskIdentifier) obj;
+                return temp.getId().equals(this.getId());
+            }
+            return false;
+        }
+    }
 }

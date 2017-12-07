@@ -1,14 +1,13 @@
 package com.stylefeng.guns.modular.system.controller;
 
+import com.youe.yc.common.utils.JsonUtils;
 import com.youe.yc.common.vo.Response;
 import com.youe.yc.spiderclient.template.entity.Template;
 import com.youe.yc.spiderclient.template.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,9 +39,15 @@ public class TemplateController {
 
     @RequestMapping("/upsert")
     @ResponseBody
-    public Response upsertTemplate(Template template){
-        Response.ResponseBuilder<Void> builder = new Response.ResponseBuilder<Void>(null);
+    public Response upsertTemplate(@RequestBody String templateJsonStr){
+        Response.ResponseBuilder<Void> builder = new Response.ResponseBuilder<Void>(null)
+                .success(true);
         try {
+            if (!StringUtils.hasText(templateJsonStr)) {
+                throw new IllegalArgumentException("配置信息不能为空");
+            }
+
+            Template template = JsonUtils.parseObject(templateJsonStr, Template.class);
             templateService.upsertTemplate(template);
         } catch (Exception e) {
             builder.success(false)
