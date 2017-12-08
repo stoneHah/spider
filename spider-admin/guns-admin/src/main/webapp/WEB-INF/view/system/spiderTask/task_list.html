@@ -1,0 +1,82 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+	#template_list .active a{
+		color: #fff;
+	}
+
+	#regionRuleZone .panel-heading{
+		position: relative;
+	}
+
+	#regionRuleZone .panel-heading .heading-btn{
+		position: absolute;
+		top: 2px;
+		right: 5px;
+	}
+
+	#regionRuleZone .panel-heading .heading-font-btn{
+		position: absolute;
+		font-size: 20px;
+		top: 7px;
+		right: 5px;
+		cursor: pointer;
+	}
+
+	.fieldRuleContainer{
+		position: relative;
+		padding-right: 20px;
+	}
+
+	.fieldRuleContainer .field-delete-btn{
+		position: absolute;
+		right: -5px;
+		top: 27px;
+		font-size: 20px;
+		color: #bd1d1d;
+		cursor: pointer;
+	}
+
+</style>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title" style="position: relative;">
+				<h5>任务管理</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row row-lg">
+					<div class="ibox-title">
+						<ul id="myTab" class="nav nav-tabs">
+							<li class="active"><a href="#managerTableToolbar1" data-status="1" data-toggle="tab">运行中</a></li>
+							<li><a href="#managerTableToolbar2" data-status="3" data-toggle="tab">已完成</a></li>
+							<li><a href="#managerTableToolbar4" data-status="2" data-toggle="tab">暂停</a></li>
+							<li><a href="#managerTableToolbar3" data-status="0" data-toggle="tab">待执行任务</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-lg-12 col-sm-12">
+								<div class="row">
+									<div class="col-lg-8 col-sm-6">
+									</div>
+									<!--<div class="col-lg-4 col-sm-6">
+										<div class=""  style="float:left">
+											<input type="text" placeholder="请输入任务名称/任务编号" class="input" id="name" style="width: 320px;padding-left:10px;margin-top: 2px;height:32px;line-height: 32px;border:1px solid #e5e6e7">
+										</div>
+										<div class="margin-left:20px" style="text-align: right;float:right">
+											<#button name="搜索" icon="fa-search" clickFun="Task.search()"/>
+											<#button name="重置" icon="fa-trash" clickFun="Task.resetSearch()" space="true"/>
+										</div>
+									</div>-->
+								</div>
+								<#table id="managerTable"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/spiderTask/spiderTask.js"></script>
+@}

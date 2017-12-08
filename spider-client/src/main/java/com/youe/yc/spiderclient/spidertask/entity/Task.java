@@ -1,4 +1,4 @@
-package com.youe.yc.spiderservice.core.task;
+package com.youe.yc.spiderclient.spidertask.entity;
 
 import com.google.common.hash.HashCode;
 import com.youe.yc.common.utils.IdGenerator;

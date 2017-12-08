@@ -180,9 +180,9 @@ public class SpiderTaskExecutorService implements ListableTaskExecutorService {
     }
 
     @Override
-    public List<Task> getTasks(TaskInfo.TaskContext taskContext) {
+    public List<Task> getTasks(TaskInfo.TaskContext taskContext, Task.TaskStatus taskStatus) {
         TaskExecutorContext taskExecutorContext = taskContextMap.get(taskContext);
-        return taskExecutorContext.getAllTasks();
+        return taskExecutorContext.getTasksByStatus(taskStatus);
     }
 
     /**

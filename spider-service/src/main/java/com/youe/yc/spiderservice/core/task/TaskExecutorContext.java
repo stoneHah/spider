@@ -28,4 +28,8 @@ public class TaskExecutorContext {
 
 	public static void main(String[] args) {
 	}
+
+	public List<Task> getTasksByStatus(Task.TaskStatus taskStatus) {
+		return taskList.getTasksByStatus(taskStatus);
+	}
 }

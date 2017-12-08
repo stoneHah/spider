@@ -9,3 +9,5 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost/spider
+  application:
+    name: spiderService

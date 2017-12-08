@@ -1,0 +1,27 @@
+@layout("/common/_container.html"){
+<style type="text/css">
+
+</style>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title" style="position: relative;">
+				<h5>模板配置</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row row-lg">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="hidden-xs" id="managerTableToolbar" role="group" style="float: left;margin-left: 10px;">
+								<#button name="添加模板" icon="fa-plus" clickFun="TemplateListMgr.openAddLink()"/>
+							</div>
+							<#table id="templateTable"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/template/templateList.js"></script>
+@}

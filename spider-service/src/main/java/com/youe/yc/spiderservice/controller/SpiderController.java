@@ -32,13 +32,13 @@ public class SpiderController {
         return builder.build();
     }
 
-    @RequestMapping(value = "/tasks", method = RequestMethod.GET)
-    public Response<List<Task>> getTasks(){
+    @RequestMapping(value = "/tasks/{taskStatus}", method = RequestMethod.GET)
+    public Response<List<Task>> getTasks(@PathVariable("taskStatus") int taskStatus){
         Response.ResponseBuilder builder = new Response.ResponseBuilder()
                 .success(true);
 
         try {
-            List<Task> tasks = taskExecutorService.getTasks(TaskInfo.TaskContext.GLOBAL_CONTEXT);
+            List<Task> tasks = taskExecutorService.getTasks(TaskInfo.TaskContext.GLOBAL_CONTEXT, Task.TaskStatus.getByCode(taskStatus));
             builder.data(tasks);
         } catch (Exception e) {
             e.printStackTrace();

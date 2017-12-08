@@ -6,6 +6,7 @@ import com.youe.yc.spiderclient.template.entity.Template;
 import com.youe.yc.spiderclient.template.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,26 +21,37 @@ public class TemplateController {
     @Autowired
     private TemplateService templateService;
 
-    @RequestMapping(value = "",method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String home() {
-        return PREFIX + "/template.html";
+        return PREFIX + "/template_list.html";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addTemplate() {
+        return PREFIX + "/template_conf.html";
+    }
+
+    @RequestMapping(value = "/update/{templateId}", method = RequestMethod.GET)
+    public String updateTemplate(@PathVariable("templateId") String templateId, Model model) {
+        model.addAttribute("templateId", templateId);
+        return PREFIX + "/template_conf.html";
     }
 
     @RequestMapping("/list")
     @ResponseBody
-    public List<Template> list(){
+    public List<Template> list() {
         return templateService.findAll();
     }
 
     @RequestMapping("/{templateId}")
     @ResponseBody
-    public Template getTemplate(@PathVariable("templateId") String templateId){
+    public Template getTemplate(@PathVariable("templateId") String templateId) {
         return templateService.getTemplate(templateId);
     }
 
     @RequestMapping("/upsert")
     @ResponseBody
-    public Response upsertTemplate(@RequestBody String templateJsonStr){
+    public Response upsertTemplate(@RequestBody String templateJsonStr) {
         Response.ResponseBuilder<Void> builder = new Response.ResponseBuilder<Void>(null)
                 .success(true);
         try {

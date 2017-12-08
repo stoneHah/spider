@@ -28,14 +28,22 @@ public class TaskList implements Iterable<Task> {
 	}
 
 	public List<Task> getTaskList(){
-		return taskList;
+		return Collections.unmodifiableList(taskList);
 	}
 
 	@Override
-
 	public Iterator<Task> iterator() {
 		return taskList.iterator();
 	}
 
 
+	public List<Task> getTasksByStatus(Task.TaskStatus taskStatus) {
+		List<Task> tasks = new ArrayList<>();
+		for (Task task : taskList) {
+			if (task.getTaskStatus() == taskStatus) {
+				tasks.add(task);
+			}
+		}
+		return Collections.unmodifiableList(tasks);
+	}
 }

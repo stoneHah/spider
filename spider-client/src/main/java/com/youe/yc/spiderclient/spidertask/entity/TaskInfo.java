@@ -1,4 +1,4 @@
-package com.youe.yc.spiderservice.core.task;
+package com.youe.yc.spiderclient.spidertask.entity;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 

@@ -34,10 +34,10 @@ TemplateMgr.getTemplates = function (successCallback) {
  * 选中某个模板
  */
 TemplateMgr.selectTemplate = function (templateId) {
-    var $tempList = $('#template_list');
+    /*var $tempList = $('#template_list');
     $tempList.find('a').removeClass('active');
 
-    $tempList.find('a[data-templateid="'+templateId+'"]').addClass("active");
+    $tempList.find('a[data-templateid="'+templateId+'"]').addClass("active");*/
 
     $('#accordion').empty();
     TemplateMgr.getAndFillTemplate(templateId);
@@ -83,6 +83,10 @@ TemplateMgr.fillData = function (data) {
         });
     }
 
+};
+
+TemplateMgr.openTemplatelistLink = function () {
+    window.location.href = '/template';
 };
 
 /**
@@ -320,13 +324,14 @@ TemplateMgr.buildFieldRegionId = function(regionIndex,fieldIndex){
 }
 
 $(function () {
-    TemplateMgr.getTemplates(function (templateDataList){
-        /*if(templateDataList && templateDataList.length > 0) {
+    /*TemplateMgr.getTemplates(function (templateDataList){
+        /!*if(templateDataList && templateDataList.length > 0) {
             TemplateMgr.selectTemplate(templateDataList[0].id);
-        }*/
-    });
+        }*!/
+    });*/
 
-    $('#template_list a').click(function(e){
-        TemplateMgr.selectTemplate($(e.target).data('templateid'));
-    });
+    var templateId = $('#id').val();
+    if(templateId) {
+        TemplateMgr.selectTemplate(templateId);
+    }
 });

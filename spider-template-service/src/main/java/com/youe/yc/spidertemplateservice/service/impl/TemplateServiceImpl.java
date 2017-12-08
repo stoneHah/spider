@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,9 @@ public class TemplateServiceImpl implements ITemplateService {
 
 	@Override
 	public void save(Template template) {
+		if(!StringUtils.hasText(template.getId())){
+			template.setCreateTime(new Date());
+		}
 		template.setUpdateTime(new Date());
 		mongoTemplate.save(template);
 	}

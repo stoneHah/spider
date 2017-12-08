@@ -1,6 +1,7 @@
 package com.stylefeng.guns;
 
 import com.stylefeng.guns.config.properties.GunsProperties;
+import com.youe.yc.spiderclient.EnableSpiderTaskClient;
 import com.youe.yc.spiderclient.EnableTemplateClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @SpringBootApplication
 @EnableTemplateClient
+@EnableSpiderTaskClient
 public class GunsApplication extends WebMvcConfigurerAdapter{
 
     protected final static Logger logger = LoggerFactory.getLogger(GunsApplication.class);
