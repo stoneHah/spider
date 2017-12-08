@@ -7,7 +7,10 @@ import com.youe.yc.spiderservice.core.exception.TaskExecuteException;
 import com.youe.yc.spiderservice.core.request.RequestType;
 import com.youe.yc.spiderservice.core.request.TypeRequest;
 import com.youe.yc.spiderservice.core.spider.YoueSpider;
-import com.youe.yc.spiderservice.core.task.*;
+import com.youe.yc.spiderservice.core.task.ListableTaskExecutorService;
+import com.youe.yc.spiderservice.core.task.Task;
+import com.youe.yc.spiderservice.core.task.TaskExecutorContext;
+import com.youe.yc.spiderservice.core.task.TaskInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,30 +68,33 @@ public class SpiderTaskExecutorService implements ListableTaskExecutorService {
     private final ConcurrentHashMap<Task.TaskIdentifier, SpiderTask> taskIdToSpiderTaskMap = new ConcurrentHashMap();
 
     public SpiderTaskExecutorService() {
-//		startTaskExecutor();
-    }
-
-    private void startTaskExecutor() {
-
     }
 
     @Override
     public void execute(TaskInfo taskInfo) throws TaskExecuteException {
         checkUniqueTemplateTask(taskInfo.getTemplateId());
 
-        Task task = createTask(taskInfo);
+        Template template = getTemplate(taskInfo.getTemplateId());
+        if (template == null) {
+            throw new TaskExecuteException(String.format("please check whether the template[id=%s] is deleted", taskInfo.getTemplateId()));
+        }
 
-        runTask(task);
+        Task task = createTask(taskInfo,template);
+
+        runTask(task,template);
     }
 
     private void checkUniqueTemplateTask(String templateId) {
-        if (templateTaskMap.contains(templateId)) {
+        if (templateTaskMap.containsKey(templateId)) {
             throw new TaskExecuteException(String.format("template[id=%s] has running task,please ensure only one task related with template", templateId));
         }
     }
 
-    private Task createTask(TaskInfo taskInfo) {
+    private Task createTask(TaskInfo taskInfo, Template template) {
         Task task = new Task(taskInfo);
+
+        task.setName(template.getName() + task.getTaskIdentifier().toString());
+        task.setSeedUrl(template.getSeedUrl().getUrl());
 
         Task previousTask = templateTaskMap.putIfAbsent(taskInfo.getTemplateId(), task);
         if (previousTask != null) {
@@ -98,13 +104,13 @@ public class SpiderTaskExecutorService implements ListableTaskExecutorService {
         taskIdToTaskMap.put(task.getTaskIdentifier(), task);
 
         TaskInfo.TaskContext taskContext = task.getTaskContext();
-        if (taskContextMap.contains(taskContext)) {
+        if (taskContextMap.containsKey(taskContext)) {
             TaskExecutorContext taskExecutorContext = taskContextMap.get(taskContext);
             taskExecutorContext.addTask(task);
         } else {
             synchronized (taskContextMap) {
                 TaskExecutorContext taskExecutorContext;
-                if (taskContextMap.contains(taskContext)) {
+                if (taskContextMap.containsKey(taskContext)) {
                     taskExecutorContext = taskContextMap.get(taskContext);
                 } else {
                     taskExecutorContext = new TaskExecutorContext();
@@ -118,12 +124,7 @@ public class SpiderTaskExecutorService implements ListableTaskExecutorService {
         return task;
     }
 
-    private void runTask(Task task) {
-        Template template = getTemplate(task);
-        if (template == null) {
-            throw new TaskExecuteException(String.format("please check whether the template[id=%s] is deleted", task.getTaskInfo().getTemplateId()));
-        }
-
+    private void runTask(Task task,Template template) {
         SpiderTask spiderTask = new SpiderTask(task, template);
         threadPool.execute(spiderTask);
 
@@ -132,8 +133,8 @@ public class SpiderTaskExecutorService implements ListableTaskExecutorService {
         task.setTaskStatus(Task.TaskStatus.Running);
     }
 
-    private Template getTemplate(Task task) {
-        return templateService.getTemplate(task.getTaskInfo().getTemplateId());
+    private Template getTemplate(String templateId) {
+        return templateService.getTemplate(templateId);
     }
 
 	/*private synchronized void checkTaskStatusAndUpdating(TaskInfo task, Task.TaskStatus curStatus, Task.TaskStatus expectStatus) {
@@ -185,6 +186,11 @@ public class SpiderTaskExecutorService implements ListableTaskExecutorService {
         return taskExecutorContext.getTasksByStatus(taskStatus);
     }
 
+    @Override
+    public Task getTask(Task.TaskIdentifier taskIdentifier) {
+        return taskIdToTaskMap.get(taskIdentifier);
+    }
+
     /**
      * 爬虫任务
      */
@@ -218,6 +224,8 @@ public class SpiderTaskExecutorService implements ListableTaskExecutorService {
 
         }
 
+
+
         private Request buildSeedRequest(String taskId, Template template) {
             return new TypeRequest.TypeRequestBuilder(template.getSeedUrl().getUrl(), RequestType.Seed)
                     .depth(template.getDepth())
@@ -229,6 +237,8 @@ public class SpiderTaskExecutorService implements ListableTaskExecutorService {
         protected void onTaskComplete(Task task) {
             task.setTaskStatus(Task.TaskStatus.Complete);
             task.setCompleteTime(new Date());
+
+            templateTaskMap.remove(task.getTaskInfo().getTemplateId());
 
             logger.info("task completed and time consuming：{} ms", (task.getCompleteTime().getTime() - task.getCreateTime().getTime()));
         }

@@ -9,4 +9,6 @@ public interface ListableTaskExecutorService extends CountableTaskExecutorServic
      * @return
      */
     List<Task> getTasks(TaskInfo.TaskContext taskContext, Task.TaskStatus taskStatus);
+
+    Task getTask(Task.TaskIdentifier taskIdentifier);
 }

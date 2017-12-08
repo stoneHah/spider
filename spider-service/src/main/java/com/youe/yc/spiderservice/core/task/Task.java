@@ -13,7 +13,11 @@ public class Task {
     private TaskInfo taskInfo;
     private volatile TaskStatus taskStatus;
 
+    private String name;
+    private String seedUrl;
+
     private Date createTime;
+    private Date runTime;
     private Date completeTime;
 
     public Task(TaskInfo taskInfo) {
@@ -24,10 +28,33 @@ public class Task {
         this.createTime = new Date();
     }
 
+    public String getSeedUrl() {
+        return seedUrl;
+    }
+
+    public void setSeedUrl(String seedUrl) {
+        this.seedUrl = seedUrl;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getRunTime() {
+        return runTime;
+    }
+
+    public void setRunTime(Date runTime) {
+        this.runTime = runTime;
+    }
+
     public TaskInfo getTaskInfo() {
         return taskInfo;
     }
-
 
     public TaskStatus getTaskStatus() {
         return taskStatus;
@@ -72,7 +99,11 @@ public class Task {
     }
 
     public static enum TaskStatus {
-        Create(0), Running(1), Pause(2), Complete(3);
+        Create(0), Running(1), Pause(2), Complete(3),
+        /**
+         * 待执行
+         */
+        ToRunning(4);
         private int code;
 
         TaskStatus(int code) {
@@ -119,6 +150,11 @@ public class Task {
                 return temp.getId().equals(this.getId());
             }
             return false;
+        }
+
+        @Override
+        public String toString() {
+            return id;
         }
     }
 }

@@ -1,8 +1,10 @@
 package com.stylefeng.guns.modular.system.controller;
 
 import com.youe.yc.common.vo.Response;
+import com.youe.yc.spiderclient.spidertask.entity.CrawlData;
 import com.youe.yc.spiderclient.spidertask.entity.Task;
 import com.youe.yc.spiderclient.spidertask.service.SpiderTaskService;
+import com.youe.yc.spiderclient.template.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,9 @@ public class SpiderTaskController {
 
     @Autowired
     private SpiderTaskService spiderTaskService;
+
+    @Autowired
+    private TemplateService templateService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String home() {
@@ -41,5 +46,11 @@ public class SpiderTaskController {
         }
 
         return null;
+    }
+
+    @RequestMapping(value = "/viewData/{taskId}",method = RequestMethod.GET)
+    @ResponseBody
+    public Response<List<CrawlData>> getCrawlData(@PathVariable("taskId") String taskId){
+        return spiderTaskService.getCrawlData(taskId);
     }
 }

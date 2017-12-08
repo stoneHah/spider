@@ -1,6 +1,7 @@
 package com.youe.yc.spiderclient.spidertask.service;
 
 import com.youe.yc.common.vo.Response;
+import com.youe.yc.spiderclient.spidertask.entity.CrawlData;
 import com.youe.yc.spiderclient.spidertask.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,5 +23,9 @@ public class SpiderTaskService {
 
     public Response<List<Task>> getTasks(Task.TaskStatus taskStatus){
         return restTemplate.getForObject(url + "tasks/{1}", Response.class,taskStatus.getCode());
+    }
+
+    public Response<List<CrawlData>> getCrawlData(String taskId){
+        return restTemplate.getForObject(url + "crawData/{1}", Response.class,taskId);
     }
 }

@@ -5,12 +5,12 @@ import com.youe.yc.common.utils.JsonUtils;
 import com.youe.yc.spiderclient.template.entity.Template;
 import com.youe.yc.spiderclient.template.service.TemplateService;
 import com.youe.yc.spiderservice.core.entity.CrawlData;
+import com.youe.yc.spiderservice.util.DBUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
-import us.codecraft.webmagic.utils.UrlUtils;
 
 @Component
 public class MongoResultPersistentService implements IResultPersistentService {
@@ -34,7 +34,7 @@ public class MongoResultPersistentService implements IResultPersistentService {
 		crawlData.setId(IdGenerator.getId());
 		
 		try {
-			String collectionName = UrlUtils.getDomain(template.getSeedUrl().getUrl()).replace(".", "_");
+			String collectionName = DBUtils.determineMongoCollection(template.getSeedUrl().getUrl());
 			JsonUtils.toJsonString(crawlData);
 			mongoTemplate.save(crawlData, collectionName);
 			return true;
